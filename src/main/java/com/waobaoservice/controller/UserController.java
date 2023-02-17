@@ -3,6 +3,7 @@ package com.waobaoservice.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author DJS
@@ -10,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Modified By DJS
  **/
 
-@Controller
+@RestController
 public class UserController {
 
-    @RequestMapping("/hello")
+    @RequestMapping("/index")
     public String test(String username) {
         System.out.println(username);
-        return "";
+        return "index";
     }
 
 }
