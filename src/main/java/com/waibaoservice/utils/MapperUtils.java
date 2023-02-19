@@ -1,4 +1,4 @@
-package com.waobaoservice.utils;
+package com.waibaoservice.utils;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -14,8 +14,8 @@ import java.io.InputStream;
  * Modified By DJS
  **/
 public class MapperUtils {
-    final static private String resource = "mybatis-config.xml";
-    private static InputStream inputStream = null;
+    final private static String resource = "mybatis-config.xml";
+    private static InputStream inputStream;
     final private static SqlSessionFactory sqlSessionFactory;
     final private static SqlSession sqlSession;
 
