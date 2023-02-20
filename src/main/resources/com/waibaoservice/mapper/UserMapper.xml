@@ -6,4 +6,9 @@
     <select id="selectUserById" resultType="user">
         select * from tb_user where id = #{id}
     </select>
+
+    <select id="selectUserByInfo" resultType="user">
+        select tel, password from tb_user
+        where tel = #{tel} and password = #{password}
+    </select>
 </mapper>
