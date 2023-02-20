@@ -10,5 +10,7 @@
     <select id="selectUserByInfo" resultType="user">
         select tel, password from tb_user
         where tel = #{tel} and password = #{password}
+    <select id="selectUserByTel" resultType="user">
+        select * from tb_user where tel = #{tel}
     </select>
 </mapper>

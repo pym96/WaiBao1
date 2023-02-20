@@ -1,10 +1,18 @@
 package com.waibaoservice.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @author DJS
  * Date create 22:23 2023/2/19
  * Modified By DJS
  **/
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     private Integer id;
     private String tel;
