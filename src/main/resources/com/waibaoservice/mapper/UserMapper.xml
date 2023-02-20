@@ -6,4 +6,7 @@
     <select id="selectUserById" resultType="user">
         select * from tb_user where id = #{id}
     </select>
+    <select id="selectUserByTel" resultType="user">
+        select * from tb_user where tel = #{tel}
+    </select>
 </mapper>

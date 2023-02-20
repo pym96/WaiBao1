@@ -14,6 +14,8 @@ import java.io.InputStream;
  * Modified By DJS
  **/
 public class MapperUtils {
+
+    // Mybatis configuration file, and it's necessary.
     final private static String resource = "mybatis-config.xml";
     private static InputStream inputStream;
     final private static SqlSessionFactory sqlSessionFactory;
