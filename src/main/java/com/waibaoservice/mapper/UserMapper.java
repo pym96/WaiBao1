@@ -7,4 +7,6 @@ public interface UserMapper {
     User selectUserByInfo(User user);
     User selectUserByTel(String tel);
 
+    // 插入
+    int insertUser(User user);
 }

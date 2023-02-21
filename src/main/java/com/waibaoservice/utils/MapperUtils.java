@@ -30,7 +30,7 @@ public class MapperUtils {
             e.printStackTrace();
         }
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        sqlSession = sqlSessionFactory.openSession();
+        sqlSession = sqlSessionFactory.openSession(true);
     }
 
     public static <T> T getMapper(Class<T> c) {

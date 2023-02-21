@@ -20,9 +20,25 @@ public class UserServiceImpl implements UserService {
 
     private final static UserMapper mapper = MapperUtils.getMapper(UserMapper.class);
 
+    // 登录
     @Override
     public boolean loginService(User user) {
         User u = mapper.selectUserByInfo(user);
         return u != null;
     }
+
+    // 注册
+    @Override
+    public boolean userRegister(User user) {
+        // 查找用户是否存在
+        User u = mapper.selectUserByInfo(user);
+        if (u == null) return false;
+        else {
+            // 插入用户
+            mapper.insertUser(user);
+            return true;
+        }
+    }
+
+
 }
