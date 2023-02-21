@@ -18,7 +18,8 @@ import org.springframework.stereotype.Controller;
 @Component
 public class UserServiceImpl implements UserService {
 
-    private final static UserMapper mapper = MapperUtils.getMapper(UserMapper.class);
+    private final static UserMapper mapper
+            = MapperUtils.getMapper(UserMapper.class);
 
     // 登录
     @Override
@@ -32,13 +33,13 @@ public class UserServiceImpl implements UserService {
     public boolean userRegister(User user) {
         // 查找用户是否存在
         User u = mapper.selectUserByInfo(user);
-        if (u == null) return false;
+        // 用户存在
+        if (u != null) return false;
         else {
-            // 插入用户
-            mapper.insertUser(user);
-            return true;
+            // 插入成功返回true， 不成功返回false
+            int result = mapper.insertUser(user);
+            return result == 1;
         }
     }
-
 
 }
