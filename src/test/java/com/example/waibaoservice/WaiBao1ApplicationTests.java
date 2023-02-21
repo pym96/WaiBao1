@@ -18,4 +18,15 @@ class WaiBao1ApplicationTests {
         System.out.println(user_by_tel);
     }
 
+    @Test
+    void insertTest() {
+        User user = new User();
+        user.setTel("12343245321");
+        user.setPassword("c324c23c");
+        final UserMapper mapper = MapperUtils.getMapper(UserMapper.class);
+        int result = mapper.insertUser(user);
+        System.out.println(result);
+        System.out.println(user);
+    }
+
 }
