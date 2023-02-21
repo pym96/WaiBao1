@@ -31,15 +31,13 @@ public class UserServiceImpl implements UserService {
     // 注册
     @Override
     public boolean userRegister(User user) {
-        // 查找用户是否存在
-        User u = mapper.selectUserByInfo(user);
-        // 用户存在
-        if (u != null) return false;
-        else {
-            // 插入成功返回true， 不成功返回false
+        String tel = user.getTel();
+        User u = mapper.selectUserByTel(tel);
+        if (u == null) {
             int result = mapper.insertUser(user);
             return result == 1;
         }
+        else return false;
     }
 
 }

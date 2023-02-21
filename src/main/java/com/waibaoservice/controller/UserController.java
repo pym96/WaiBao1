@@ -34,7 +34,6 @@ public class UserController {
     // 用户注册接口
     @PostMapping("/userRegister")
     public boolean register(@RequestBody User user) {
-        System.out.println(user);
         return userService.userRegister(user);
     }
 }
