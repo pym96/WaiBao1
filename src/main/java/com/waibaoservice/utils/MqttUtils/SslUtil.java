@@ -1,14 +1,15 @@
 package com.waibaoservice.utils.MqttUtils;
 
+
+import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMReader;
-
+import org.bouncycastle.openssl.PasswordFinder;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,6 +18,7 @@ import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.X509Certificate;
+
 
 /***
  *  两种方式验证
@@ -40,89 +42,80 @@ public class SslUtil {
      * @return
      * @throws Exception
      */
-    public static SSLSocketFactory getSocketFactoryByCert(final String caCrtFile, final String crtFile,
-                                                          final String keyFile, final String password) throws Exception {
-        Security.addProvider(new BouncyCastleProvider());
+            public static SSLSocketFactory getSocketFactory(final String caCrtFile, final String crtFile, final String keyFile,
+            final String password, String protocal) throws Exception {
+                Security.addProvider(new BouncyCastleProvider());
+                // load CA certificate
+                PEMReader reader = new PEMReader(new InputStreamReader(new ByteArrayInputStream(Files.readAllBytes(Paths.get(caCrtFile)))));
+                X509Certificate caCert = (X509Certificate)reader.readObject();
+                reader.close();
 
-        // 加载CA证书（用于验证的根证书）
-        PEMReader reader =
-                new PEMReader(new InputStreamReader(new ByteArrayInputStream(Files.readAllBytes(Paths.get(caCrtFile)))));
-        X509Certificate caCert = (X509Certificate)reader.readObject();
-        reader.close();
+                // load client certificate
+                reader = new PEMReader(new InputStreamReader(new ByteArrayInputStream(Files.readAllBytes(Paths.get(crtFile)))));
+                X509Certificate cert = (X509Certificate)reader.readObject();
+                reader.close();
 
-        // 加载自己的证书，用于发送给客户端
-        reader = new PEMReader(new InputStreamReader(new ByteArrayInputStream(Files.readAllBytes(Paths.get(crtFile)))));
-        X509Certificate cert = (X509Certificate)reader.readObject();
-        reader.close();
+                // load client private key
+                reader = new PEMReader(
+                        new InputStreamReader(new ByteArrayInputStream(Files.readAllBytes(Paths.get(keyFile)))),
+                    new PasswordFinder() {
+                        @Override
+                        public char[] getPassword() {
+                            return password.toCharArray();
+                        }
+                    }
+            );
+            KeyPair key = (KeyPair)reader.readObject();
+            reader.close();
 
-        // 加载私钥
-        reader = new PEMReader(new InputStreamReader(new ByteArrayInputStream(Files.readAllBytes(Paths.get(keyFile)))),
-                () -> password.toCharArray());
-        KeyPair key = (KeyPair)reader.readObject();
-        reader.close();
+            // CA certificate is used to authenticate server
+            KeyStore caKs = KeyStore.getInstance(KeyStore.getDefaultType());
+            caKs.load(null, null);
+            caKs.setCertificateEntry("ca-certificate", caCert);
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            tmf.init(caKs);
 
-        // 用CA证书创建TrustManagerFactory
-        KeyStore caKs = KeyStore.getInstance(KeyStore.getDefaultType());
-        caKs.load(null, null);
-        caKs.setCertificateEntry("ca-certificate", caCert);
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-        tmf.init(caKs);
+            // client key and certificates are sent to server so it can authenticate us
+            KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+            ks.load(null, null);
+            ks.setCertificateEntry("certificate", cert);
+            ks.setKeyEntry("private-key", key.getPrivate(), password.toCharArray(), new java.security.cert.Certificate[]{cert});
+            KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+            kmf.init(ks, password.toCharArray());
 
-        // 用证书和私钥创建KeyManagerFactory
-        KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
-        ks.load(null, null);
-        ks.setCertificateEntry("certificate", cert);
-        ks.setKeyEntry("private-key", key.getPrivate(), password.toCharArray(),
-                new java.security.cert.Certificate[] {cert});
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        kmf.init(ks, password.toCharArray());
+            // 空时 默认
+            if(StringUtils.isBlank(protocal)){
+                protocal= "TLSv1.1";
+            }
 
-        SSLContext context = SSLContext.getInstance("TLSv1");
-        // kmf用于发送关键信息让服务端校验，tmf用于校验服务端的证书。双向认证
-        context.init(kmf.getKeyManagers(), tmf.getTrustManagers(), new SecureRandom());
-        return context.getSocketFactory();
-    }
+            SSLContext context = SSLContext.getInstance(protocal);//"TLSv1.1"
+            context.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
 
-    /**
-     * 通过keyStore加载
-     *
-     * @param keyStorePath
-     *            keystore路径（保存自己的秘钥和证书）
-     * @param trustKeyStorePath
-     *            truststore路径（保存受信的证书）
-     * @param ksPass
-     *            keystore密码
-     * @param tsPass
-     *            truststore密码
-     * @return
-     * @throws Exception
-     */
-    public static SSLSocketFactory getSocketFactoryByKeystore(String keyStorePath, String trustKeyStorePath,
-                                                              String ksPass, String tsPass) throws Exception {
-        // keytool生成的keystore的类型就是JKS
-        KeyStore keyStore = KeyStore.getInstance("JKS");
-        KeyStore trustKeyStore = KeyStore.getInstance("JKS");
-        // 通过密码加载keystore
-        FileInputStream fis = new FileInputStream(keyStorePath);
-        keyStore.load(fis, ksPass.toCharArray());
-        fis.close();
-        // 加载trustKeyStore
-        FileInputStream trustFis = new FileInputStream(trustKeyStorePath);
-        trustKeyStore.load(trustFis, tsPass.toCharArray());
-        trustFis.close();
-        // 创建管理JKS密钥库的密钥管理器 (SunX509)
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        // 使用密钥内容源初始化此工厂。 提供者通常使用 KeyStore 来获取在安全套接字协商期间所使用的密钥内容
-        kmf.init(keyStore, ksPass.toCharArray());
-        // SunX509
-        TrustManagerFactory tmFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-        tmFactory.init(trustKeyStore);
+            return context.getSocketFactory();
+        }
 
-        // 初始sslcontext
-        SSLContext sslContext = SSLContext.getInstance("SSLv3");
-        // SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(kmf.getKeyManagers(), tmFactory.getTrustManagers(), new SecureRandom());
-        return sslContext.getSocketFactory();
-    }
+
+        public static SSLSocketFactory getSocketFactorySingle(final String caCrtFile, String protocol) throws Exception {
+            Security.addProvider(new BouncyCastleProvider());
+
+            // load CA certificate
+            PEMReader reader = new PEMReader(new InputStreamReader(new ByteArrayInputStream(Files.readAllBytes(Paths.get(caCrtFile)))));
+            X509Certificate caCert = (X509Certificate)reader.readObject();
+            reader.close();
+            // client key and certificates are sent to server so it can authenticate us
+            KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());//"JKS"
+            ks.load(null, null);
+            ks.setCertificateEntry("ca-certificate", caCert);
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());//"PKIX"
+            tmf.init(ks);
+            // finally, create SSL socket factory
+            if(StringUtils.isBlank(protocol)){
+                protocol= "TLSv1.1";
+            }
+            SSLContext context = SSLContext.getInstance(protocol);//"TLSv1.1"
+            context.init(null, tmf.getTrustManagers(), new SecureRandom());
+            return context.getSocketFactory();
+        }
+
 
 }
