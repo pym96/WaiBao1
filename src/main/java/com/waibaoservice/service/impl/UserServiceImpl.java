@@ -4,9 +4,6 @@ import com.waibaoservice.mapper.UserMapper;
 import com.waibaoservice.pojo.User;
 import com.waibaoservice.service.UserService;
 import com.waibaoservice.utils.MapperUtils;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,12 +13,12 @@ import org.springframework.stereotype.Service;
  **/
 
 // 加上该注解添加到spring容器, 实现依赖输入
-
-@Service
 public class UserServiceImpl implements UserService {
 
     private final static UserMapper mapper
             = MapperUtils.getMapper(UserMapper.class);
+
+    public UserServiceImpl() {}
 
     // 登录
     @Override

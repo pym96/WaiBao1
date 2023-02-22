@@ -2,7 +2,7 @@ package com.waibaoservice.controller;
 
 import com.waibaoservice.pojo.User;
 import com.waibaoservice.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.waibaoservice.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -15,13 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/login")
 public class UserController {
-    private UserService userService;
-
-    // 依赖注入
-    @Autowired
-    public void setUserService (UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService = new UserServiceImpl();
 
     public UserController() {}
 
