@@ -18,14 +18,22 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
+    // 依赖注入
     @Autowired
     public UserController (UserService userService) {
         this.userService = userService;
     }
 
+    // 用户登录接口
     @PostMapping("/userLogin")
     public boolean login(@RequestBody User user) {
         System.out.println(user);
         return userService.loginService(user);
+    }
+
+    // 用户注册接口
+    @PostMapping("/userRegister")
+    public boolean register(@RequestBody User user) {
+        return userService.userRegister(user);
     }
 }
