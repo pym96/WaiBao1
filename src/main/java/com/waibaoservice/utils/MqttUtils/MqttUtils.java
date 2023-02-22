@@ -53,7 +53,6 @@ public class MqttUtils {
     // 发布消息到服务器
     public static void publish(String message) {
         if (publisher != null) {
-            // 发布消息
             try {
                 publisher.connect(options);
                 byte[] bytes = message.getBytes(); // 将消息转为字节类型
