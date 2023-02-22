@@ -3,6 +3,7 @@ package com.example.waibaoservice;
 import com.waibaoservice.mapper.UserMapper;
 import com.waibaoservice.pojo.User;
 import com.waibaoservice.utils.MapperUtils;
+import com.waibaoservice.utils.MqttUtils.MqttUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -27,6 +28,11 @@ class WaiBao1ApplicationTests {
         int result = mapper.insertUser(user);
         System.out.println(result);
         System.out.println(user);
+    }
+
+    @Test
+    void testMqttUtils() {
+
     }
 
 }
