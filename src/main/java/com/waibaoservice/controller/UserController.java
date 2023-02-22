@@ -1,7 +1,6 @@
 package com.waibaoservice.controller;
 
 import com.waibaoservice.pojo.User;
-import com.waibaoservice.pojo.User;
 import com.waibaoservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
