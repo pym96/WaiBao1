@@ -15,13 +15,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/login")
 public class UserController {
-    private final UserService userService;
+    private UserService userService;
 
     // 依赖注入
     @Autowired
-    public UserController (UserService userService) {
+    public void setUserService (UserService userService) {
         this.userService = userService;
     }
+
+    public UserController() {}
 
     // 用户登录接口
     @PostMapping("/userLogin")

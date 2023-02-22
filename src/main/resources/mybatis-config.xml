@@ -14,9 +14,9 @@
             <dataSource type="POOLED">
                 <!--                数据库的连接信息-->
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://127.0.0.1:3306/waibao_service?useSSL=false&amp;useServerPrepStmts=true"/>
-                <property name="username" value="root"/>
-                <property name="password" value="123456"/>
+		<property name="url" value="jdbc:mysql://1.12.48.159:3306/waibao_service?useSSL=false&amp;useServerPrepStmts=true"/>
+                <property name="username" value="waibao_service"/>
+                <property name="password" value="L67czc6aZ5wcRBzi"/>
             </dataSource>
         </environment>
     </environments>

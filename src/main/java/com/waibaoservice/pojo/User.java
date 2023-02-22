@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
  * Date create 22:23 2023/2/19
  * Modified By DJS
  **/
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class User {
     private Integer id;
     private String tel;
