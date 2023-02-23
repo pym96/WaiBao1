@@ -38,12 +38,14 @@ public class UserController {
     @PostMapping("/userLogin")
     public boolean login(@RequestBody User user) {
         System.out.println(user);
+        System.out.println("user login");
         return userService.loginService(user);
     }
 
     // 用户注册接口
     @PostMapping("/userRegister")
     public boolean register(@RequestBody User user) {
+        System.out.println("user register");
         return userService.userRegister(user);
     }
 }
