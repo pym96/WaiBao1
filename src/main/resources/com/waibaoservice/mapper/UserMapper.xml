@@ -11,12 +11,12 @@
         select * from tb_user where id = #{id}
     </select>
 
-    <select id="selectUserByInfo" resultType="user">
+    <select id="selectUserByInfo" resultType="com.waibaoservice.pojo.User">
         select tel, password from tb_user
         where tel = #{tel} and password = #{password}
     </select>
 
-    <select id="selectUserByTel" resultType="user">
+    <select id="selectUserByTel" resultType="com.waibaoservice.pojo.User">
         select * from tb_user where tel = #{tel}
     </select>
 </mapper>

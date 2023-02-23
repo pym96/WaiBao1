@@ -1,15 +1,10 @@
 package com.waibaoservice.pojo;
 
-import lombok.Data;
-
 /**
  * @author DJS
  * Date create 22:23 2023/2/19
  * Modified By DJS
  **/
-
-
-@Data
 public class User {
     private Integer id;
     private String tel;
