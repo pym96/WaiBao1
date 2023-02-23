@@ -3,9 +3,7 @@ package com.example.waibaoservice;
 import com.waibaoservice.mapper.UserMapper;
 import com.waibaoservice.pojo.User;
 import com.waibaoservice.utils.MapperUtils;
-import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 

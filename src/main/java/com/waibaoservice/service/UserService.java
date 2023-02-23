@@ -1,9 +1,8 @@
 package com.waibaoservice.service;
 
 import com.waibaoservice.pojo.User;
-import org.springframework.stereotype.Repository;
 
-@Repository
+
 public interface UserService {
     // 用户登录
     boolean loginService(User user);

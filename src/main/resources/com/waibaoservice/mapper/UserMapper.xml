@@ -7,7 +7,7 @@
         insert into tb_user(tel, password) values(#{tel}, #{password})
     </insert>
 
-    <select id="selectUserById" resultType="user">
+    <select id="selectUserById" resultType="com.waibaoservice.pojo.User">
         select * from tb_user where id = #{id}
     </select>
 

@@ -3,9 +3,12 @@ package com.waibaoservice.service.impl;
 import com.waibaoservice.mapper.UserMapper;
 import com.waibaoservice.pojo.User;
 import com.waibaoservice.service.UserService;
+import com.waibaoservice.utils.MapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @author DJS
@@ -15,13 +18,14 @@ import org.springframework.stereotype.Service;
 
 // 加上该注解添加到spring容器, 实现依赖输入
 @Service
-@Component
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper mapper;
 
-    public UserServiceImpl() {}
+    public UserServiceImpl() {
+
+    }
 
     // 登录
     @Override
@@ -33,6 +37,7 @@ public class UserServiceImpl implements UserService {
     // 注册
     @Override
     public boolean userRegister(User user) {
+        System.out.println(mapper);
         String tel = user.getTel();
         User u = mapper.selectUserByTel(tel);
         if (u == null) {

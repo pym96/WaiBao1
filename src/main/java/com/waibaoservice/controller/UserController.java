@@ -30,6 +30,7 @@ public class UserController {
         user.setTel(username);
         user.setPassword("fewsfadsf");
         userService.userRegister(user);
+        System.out.println("insert");
         return "";
     }
 
