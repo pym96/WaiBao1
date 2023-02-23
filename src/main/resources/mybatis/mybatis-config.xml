@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<!--    <typeAliases>-->
+<!--        <package name="com.waibaoservice.pojo"/>-->
+<!--    </typeAliases>-->
+
+<!--    <environments default="development">-->
+<!--        <environment id="development">-->
+<!--            <transactionManager type="JDBC"/>-->
+<!--            <dataSource type="POOLED">-->
+<!--                &lt;!&ndash;                数据库的连接信息&ndash;&gt;-->
+<!--                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>-->
+<!--		        <property name="url" value="jdbc:mysql://1.12.48.159:3306/waibao_service?useSSL=false&amp;useServerPrepStmts=true"/>-->
+<!--                <property name="username" value="waibao_service"/>-->
+<!--                <property name="password" value="L67czc6aZ5wcRBzi"/>-->
+<!--            </dataSource>-->
+<!--        </environment>-->
+<!--    </environments>-->
+<!--    <mappers>-->
+<!--        &lt;!&ndash;加载sql的映射文件 &ndash;&gt;-->
+<!--        &lt;!&ndash;旧方法&ndash;&gt;-->
+<!--        &lt;!&ndash;<mapper resource="com/itheima/mapper/tb_brandMapper.xml"/>&ndash;&gt;-->
+<!--        &lt;!&ndash;也可以使用包扫描的方式&ndash;&gt;-->
+<!--        &lt;!&ndash;包扫描&ndash;&gt;-->
+<!--        <package name="com.waibaoservice.mapper"/>-->
+<!--    </mappers>-->
+</configuration>

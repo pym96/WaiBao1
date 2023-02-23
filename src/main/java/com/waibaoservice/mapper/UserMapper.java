@@ -1,7 +1,9 @@
 package com.waibaoservice.mapper;
 
 import com.waibaoservice.pojo.User;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface UserMapper {
     User selectUserById(int id);
     User selectUserByInfo(User user);

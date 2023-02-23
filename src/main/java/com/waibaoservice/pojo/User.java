@@ -1,9 +1,6 @@
 package com.waibaoservice.pojo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author DJS
@@ -11,6 +8,8 @@ import lombok.NoArgsConstructor;
  * Modified By DJS
  **/
 
+
+@Data
 public class User {
     private Integer id;
     private String tel;

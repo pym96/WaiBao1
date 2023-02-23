@@ -3,13 +3,15 @@ package com.example.waibaoservice;
 import com.waibaoservice.mapper.UserMapper;
 import com.waibaoservice.pojo.User;
 import com.waibaoservice.utils.MapperUtils;
-import com.waibaoservice.utils.MqttUtils.MqttUtils;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
 @SpringBootTest(classes = WaiBao1ApplicationTests.class)
 class WaiBao1ApplicationTests {
+
     @Test
     void contextLoads() {
         final UserMapper mapper = MapperUtils.getMapper(UserMapper.class);
@@ -32,7 +34,7 @@ class WaiBao1ApplicationTests {
 
     @Test
     void testMqttUtils() {
-
+        System.out.println("Hello");
     }
 
 }
