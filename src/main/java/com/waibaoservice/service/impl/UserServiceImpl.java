@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
     // 登录
     @Override
     public boolean loginService(User user) {
+        System.out.println("loginService call");
         User u = mapper.selectUserByInfo(user);
         return u != null;
     }
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
     // 注册
     @Override
     public boolean userRegister(User user) {
-        System.out.println(mapper);
+        System.out.println("userRegister call");
         String tel = user.getTel();
         User u = mapper.selectUserByTel(tel);
         if (u == null) {
