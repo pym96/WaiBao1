@@ -15,4 +15,8 @@
             #{unionid}
         )
     </insert>
+    <select id="selectUserByOpenId" resultType="com.waibaoservice.pojo.User">
+        select openid from tb_user_info where openid = #{openid}
+    </select>
+
 </mapper>

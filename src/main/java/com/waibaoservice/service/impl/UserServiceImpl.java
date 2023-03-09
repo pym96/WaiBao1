@@ -28,13 +28,18 @@ public class UserServiceImpl implements UserService {
         ObjectMapper mapper = new ObjectMapper();
         User user = mapper.readValue(json_str , User.class);
         System.out.println(user);
-        // 保存数据至数据库
-        int res = this.mapper.insertUserInfo(
-                user.getOpenid(),
-                user.getSession_key(),
-                user.getUnionid());
-        if (res != 1) System.out.println("登录失败, 插入数据失败");
-        else System.out.println("登录成功, 插入数据成功");
+        // 需要先查看数据库是否又存在此人，如果存在，不需要插入
+        User u = this.mapper.selectUserByOpenId(user.getOpenid());
+        // 不存在此人
+        if (u == null) {
+            // 保存数据至数据库
+            int res = this.mapper.insertUserInfo(
+                    user.getOpenid(),
+                    user.getSession_key(),
+                    user.getUnionid());
+            if (res != 1) System.out.println("登录失败, 插入数据失败");
+            else System.out.println("登录成功, 插入数据成功");
+        }
         return user;
     }
 }

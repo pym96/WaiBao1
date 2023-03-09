@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.*;
  * Modified By DJS
  **/
 
-
-
 @RestController
 @RequestMapping("/login")
 public class UserController {
-
     @Autowired
     UserService userService;
 

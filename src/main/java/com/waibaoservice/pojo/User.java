@@ -24,7 +24,7 @@ public class User {
     }
 
     public void setSession_key(String session_key) {
-        Session_key = session_key;
+        this.Session_key = session_key;
     }
 
     public String getOpenid() {
