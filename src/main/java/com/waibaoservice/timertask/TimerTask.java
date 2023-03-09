@@ -31,6 +31,7 @@ public class TimerTask implements Runnable{
     @Override
     public void run() {
         while (loopCondition) {
+            // 保证一次加载
             if (timerMapper != null && !mapperCondition) {
                 timers = timerMapper.selectAllTimer();
                 mapperCondition = false;
