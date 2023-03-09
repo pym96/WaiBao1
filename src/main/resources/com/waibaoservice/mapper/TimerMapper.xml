@@ -5,9 +5,38 @@
 <mapper namespace="com.waibaoservice.mapper.TimerMapper">
 
     <insert id="addTimer">
-
+        insert into tb_user_timer(
+            openid,
+            session_key,
+            unionid,
+            end_time
+        ) values (
+            #{openid},
+            #{session_key},
+            #{unionid},
+            #{end_time}
+        )
     </insert>
+
+    <update id="updateTimerByOpenId">
+        update
+            tb_user_timer
+        set end_time = #{end_time}
+        where openid = #{openid}
+    </update>
+
     <delete id="removeTimer">
 
     </delete>
+
+    <select id="selectAll" resultType="com.waibaoservice.pojo.Timer">
+        select * from tb_user_timer
+    </select>
+
+    <select id="selectAllTimer" resultType="com.waibaoservice.pojo.Timer">
+        select * from tb_user_timer
+    </select>
+    <select id="selectTimerByOpenId" resultType="com.waibaoservice.pojo.Timer">
+        select openid from tb_user_timer where openid = #{openid}
+    </select>
 </mapper>

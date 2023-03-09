@@ -18,6 +18,8 @@ public class WeiXinRequestUtils {
     private static final String appSecret = "f647aa91285a8a64efc3d70e621c0154";
     private static final String grant_type = "authorization_code";
 
+    private WeiXinRequestUtils() {}
+
     // 发送GET请求
     public static String sendGet(String js_code) {
         if (js_code == null) {

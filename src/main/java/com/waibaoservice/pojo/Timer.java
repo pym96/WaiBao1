@@ -10,6 +10,7 @@ public class Timer {
     private String session_key;
     private String unionid;
     private String end_time;
+    private String positive_time;
 
     public String getOpenid() {
         return openid;
@@ -43,6 +44,14 @@ public class Timer {
         this.end_time = end_time;
     }
 
+    public String getPositive_time() {
+        return positive_time;
+    }
+
+    public void setPositive_time(String positive_time) {
+        this.positive_time = positive_time;
+    }
+
     @Override
     public String toString() {
         return "Timer{" +
@@ -50,6 +59,7 @@ public class Timer {
                 ", session_key='" + session_key + '\'' +
                 ", unionid='" + unionid + '\'' +
                 ", end_time='" + end_time + '\'' +
+                ", positive_time='" + positive_time + '\'' +
                 '}';
     }
 }

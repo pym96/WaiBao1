@@ -22,14 +22,21 @@ public class TimerController {
     @PostMapping("/setTimer")
     @ResponseBody
     public boolean setTimer(@RequestBody Timer timer) {
-        return timerService.setTimer(timer);
+        if (timer != null) {
+            System.out.println(timer);
+            return timerService.setTimer(timer);
+        }
+        return false;
     }
 
     // 为用户取消定时功能
     @PostMapping("/removeTimer")
     @ResponseBody
     public boolean removeTimer(@RequestBody Timer timer) {
-        return timerService.cancelTimer(timer);
+        if (timer != null) {
+            return timerService.cancelTimer(timer);
+        }
+        return false;
     }
 
 }
