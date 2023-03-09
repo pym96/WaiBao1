@@ -18,6 +18,15 @@ public class TimerController {
     @Autowired
     TimerService timerService;
 
+    @PostMapping("/getEndTime")
+    @ResponseBody
+    public String getEndTime(@RequestBody Timer timer) {
+        if (timer != null) {
+            return timerService.getEndTime(timer);
+        }
+        return "no task";
+    }
+
     // 为用户添加定时器功能
     @PostMapping("/setTimer")
     @ResponseBody

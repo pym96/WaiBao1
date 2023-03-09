@@ -3,15 +3,12 @@ package com.waibaoservice.service.impl;
 import com.waibaoservice.mapper.TimerMapper;
 import com.waibaoservice.pojo.Timer;
 import com.waibaoservice.service.TimerService;
+import com.waibaoservice.timertask.TimerTask;
 import com.waibaoservice.utils.DateUtils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author DJS
@@ -23,9 +20,6 @@ import java.util.List;
 public class TimerServiceImpl implements TimerService {
     @Autowired
     private TimerMapper mapper;
-
-    // 缓存列表，存放所有的任务
-    private List<Timer> list;
 
     public TimerServiceImpl() {}
 
@@ -58,13 +52,20 @@ public class TimerServiceImpl implements TimerService {
             else System.out.println("更新定时任务失败");
         }
         // 更新缓存
-        list = mapper.selectAllTimer();
+
         return true;
     }
 
     // 取消定时任务
     @Override
     public boolean cancelTimer(Timer timer) {
+
         return false;
+    }
+
+    // 小程序登录时获取timer结束时间， 如果没有设置时间返回"no task"
+    @Override
+    public String getEndTime(Timer timer) {
+        return null;
     }
 }

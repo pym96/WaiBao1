@@ -1,5 +1,6 @@
 package com.waibaoservice.utils.DateUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,6 +26,15 @@ public class DateUtils {
         cal.add(Calendar.SECOND, Integer.parseInt(times[2]));
         Date endDate = cal.getTime();
         return sdf.format(endDate);
+    }
+
+    public static Date parseDateStr(String dateStr) {
+        try {
+            return sdf.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

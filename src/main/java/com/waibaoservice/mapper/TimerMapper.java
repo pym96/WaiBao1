@@ -14,10 +14,7 @@ public interface TimerMapper {
                  @Param("unionid")String unionId,
                  @Param("end_time")String dateStr);
 
-    int removeTimer(@Param("openid")String openid,
-                    @Param("session_key")String session_key,
-                    @Param("unionid")String unionId);
-
+    int removeTimer(@Param("openid")String openid);
     int updateTimerByOpenId(@Param("openid")String openid,
                     @Param("end_time")String dateStr);
 
