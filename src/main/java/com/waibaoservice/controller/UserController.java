@@ -1,18 +1,19 @@
 package com.waibaoservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.waibaoservice.pojo.User;
 import com.waibaoservice.service.UserService;
+import com.waibaoservice.utils.WeiXinUtils.WeiXinRequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-
 
 /**
  * @author DJS
  * Date create 22:54 2023/2/19
  * Modified By DJS
  **/
+
+
 
 @RestController
 @RequestMapping("/login")
@@ -23,23 +24,12 @@ public class UserController {
 
     public UserController() {}
 
-    @GetMapping("/test")
-    public String test() {
-        System.out.println("test call");
-        return "test";
-    }
-
-    // 用户登录接口
     @PostMapping("/userLogin")
-    public boolean login(@RequestBody User user) {
-        System.out.println("login call");
-        return userService.loginService(user);
-    }
-
-    // 用户注册接口
-    @PostMapping("/userRegister")
-    public boolean register(@RequestBody User user) {
-        System.out.println("register call");
-        return userService.userRegister(user);
+    @ResponseBody
+    public User login(@RequestBody User user) throws JsonProcessingException {
+        // 向微信发送请求
+        String json_str = WeiXinRequestUtils.sendGet(user.getCode());
+        System.out.println(json_str);
+        return userService.userLogin(json_str);
     }
 }

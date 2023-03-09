@@ -3,20 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.waibaoservice.mapper.UserMapper">
-    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
-        insert into tb_user(tel, password) values(#{tel}, #{password})
+
+    <insert id="insertUserInfo">
+        insert into tb_user_info (
+            openid,
+            session_key,
+            unionid
+        ) values (
+            #{openid},
+            #{session_key},
+            #{unionid}
+        )
     </insert>
-
-    <select id="selectUserById" resultType="com.waibaoservice.pojo.User">
-        select * from tb_user where id = #{id}
-    </select>
-
-    <select id="selectUserByInfo" resultType="com.waibaoservice.pojo.User">
-        select tel, password from tb_user
-        where tel = #{tel} and password = #{password}
-    </select>
-
-    <select id="selectUserByTel" resultType="com.waibaoservice.pojo.User">
-        select * from tb_user where tel = #{tel}
-    </select>
 </mapper>

@@ -1,12 +1,12 @@
 package com.waibaoservice.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.waibaoservice.mapper.UserMapper;
 import com.waibaoservice.pojo.User;
 import com.waibaoservice.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  * @author DJS
@@ -14,36 +14,27 @@ import javax.annotation.Resource;
  * Modified By DJS
  **/
 
-// 加上该注解添加到spring容器, 实现依赖输入
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper mapper;
 
-    public UserServiceImpl() {
+    public UserServiceImpl() {}
 
-    }
-
-    // 登录
+    // 通过json字符串生成User对象
     @Override
-    public boolean loginService(User user) {
-        System.out.println("loginService call");
-        User u = mapper.selectUserByInfo(user);
-        return u != null;
+    public User userLogin(String json_str) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        User user = mapper.readValue(json_str , User.class);
+        System.out.println(user);
+        // 保存数据至数据库
+        int res = this.mapper.insertUserInfo(
+                user.getOpenid(),
+                user.getSession_key(),
+                user.getUnionid());
+        if (res != 1) System.out.println("登录失败, 插入数据失败");
+        else System.out.println("登录成功, 插入数据成功");
+        return user;
     }
-
-    // 注册
-    @Override
-    public boolean userRegister(User user) {
-        System.out.println("userRegister call");
-        String tel = user.getTel();
-        User u = mapper.selectUserByTel(tel);
-        if (u == null) {
-            int result = mapper.insertUser(user);
-            return result == 1;
-        }
-        else return false;
-    }
-
 }
