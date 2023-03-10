@@ -40,6 +40,9 @@ public class UserServiceImpl implements UserService {
             if (res != 1) System.out.println("登录失败, 插入数据失败");
             else System.out.println("登录成功, 插入数据成功");
         }
+        else {
+            System.out.println("登录成功,用户存在");
+        }
         return user;
     }
 }

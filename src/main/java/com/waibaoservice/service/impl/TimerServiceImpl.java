@@ -33,39 +33,64 @@ public class TimerServiceImpl implements TimerService {
         // 将定时器任务添加到数据库, 如果数据库中本身存在任务，需要更新
         Timer t = mapper.selectTimerByOpenId(timer.getOpenid());
         if (t == null) {
-            int ret = mapper.addTimer(
-                timer.getOpenid(),
-                timer.getSession_key(),
-                timer.getUnionid(),
-                endTime
-            );
+            // 需要加锁
+            int ret;
+            synchronized (this) {
+                ret = mapper.addTimer(
+                        timer.getOpenid(),
+                        timer.getSession_key(),
+                        timer.getUnionid(),
+                        endTime
+                );
+            }
             if (ret == 1) System.out.println("添加定时任务成功");
-            else System.out.println("添加定时任务失败");
+            else {
+                System.out.println("添加定时任务失败");
+                return false;
+            }
         }
         else {
             // 更新定时任务
-            int ret = mapper.updateTimerByOpenId(
-                timer.getOpenid(),
-                endTime
-            );
+            int ret;
+            synchronized (this) {
+                ret = mapper.updateTimerByOpenId(
+                        timer.getOpenid(),
+                        endTime
+                );
+            }
             if (ret == 1) System.out.println("更新定时任务成功");
-            else System.out.println("更新定时任务失败");
+            else {
+                System.out.println("更新定时任务失败");
+                return false;
+            }
         }
-        // 更新缓存
-
         return true;
     }
 
     // 取消定时任务
     @Override
     public boolean cancelTimer(Timer timer) {
-
-        return false;
+        synchronized (this) {
+            int res;
+            res = mapper.removeTimer(timer.getOpenid());
+            if (res == 1) {
+                System.out.println("移除定时任务成功");
+                return true;
+            }
+            else {
+                System.out.println("移除定时任务失败");
+                return false;
+            }
+        }
     }
 
     // 小程序登录时获取timer结束时间， 如果没有设置时间返回"no task"
     @Override
     public String getEndTime(Timer timer) {
-        return null;
+        Timer t = mapper.selectTimerByOpenId(timer.getOpenid());
+        if (t != null) {
+            return t.getEnd_time();
+        }
+        return "no task";
     }
 }
