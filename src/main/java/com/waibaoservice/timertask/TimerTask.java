@@ -24,6 +24,7 @@ public class TimerTask implements Runnable{
     public static boolean loopCondition = true;
     public static boolean mapperCondition = false;
 
+    // 获取mapper实例
     TimerMapper timerMapper = SpringContextUtils.getBean(TimerMapper.class);
 
     public TimerTask() {}
@@ -41,16 +42,20 @@ public class TimerTask implements Runnable{
                 for (Timer timer : timers) {
                     Date currentDate = new Date();
                     Date endDate = DateUtils.parseDateStr(timer.getEnd_time());
-                    System.out.println(timers.size());
                     if (currentDate.after(endDate)) {
-                        System.out.println(timers.size());
                         synchronized (this) {
                             // 更新数据库
                             int ret = timerMapper.removeTimer(timer.getOpenid());
-                            if (ret == 1) System.out.println("任务结束");
+                            if (ret == 1) System.out.println("定时任务结束, openid:" + timer.getOpenid());
+                            else {
+                                // 如果没有数据受影响，说明数据不一致，需要更新
+                                timers = timerMapper.selectAllTimer();
+                                break;
+                            }
                             // 更新缓存
                             timers = timerMapper.selectAllTimer();
                             // 向微信服务器发送请求，向用户推消息
+
                             // 提前结束循环, 避免更新时异常
                             break;
                         }
