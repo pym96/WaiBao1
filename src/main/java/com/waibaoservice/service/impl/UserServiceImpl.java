@@ -1,12 +1,12 @@
 package com.waibaoservice.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.waibaoservice.mapper.UserMapper;
 import com.waibaoservice.pojo.User;
 import com.waibaoservice.service.UserService;
-import com.waibaoservice.utils.MapperUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 /**
  * @author DJS
@@ -14,30 +14,32 @@ import org.springframework.stereotype.Controller;
  * Modified By DJS
  **/
 
-// 加上该注解添加到spring容器, 实现依赖输入
-@Component
+@Service
 public class UserServiceImpl implements UserService {
 
-    private final static UserMapper mapper
-            = MapperUtils.getMapper(UserMapper.class);
+    @Autowired
+    private UserMapper mapper;
 
-    // 登录
-    @Override
-    public boolean loginService(User user) {
-        User u = mapper.selectUserByInfo(user);
-        return u != null;
-    }
+    public UserServiceImpl() {}
 
-    // 注册
+    // 通过json字符串生成User对象
     @Override
-    public boolean userRegister(User user) {
-        String tel = user.getTel();
-        User u = mapper.selectUserByTel(tel);
+    public User userLogin(String json_str) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        User user = mapper.readValue(json_str , User.class);
+        System.out.println(user);
+        // 需要先查看数据库是否又存在此人，如果存在，不需要插入
+        User u = this.mapper.selectUserByOpenId(user.getOpenid());
+        // 不存在此人
         if (u == null) {
-            int result = mapper.insertUser(user);
-            return result == 1;
+            // 保存数据至数据库
+            int res = this.mapper.insertUserInfo(
+                    user.getOpenid(),
+                    user.getSession_key(),
+                    user.getUnionid());
+            if (res != 1) System.out.println("登录失败, 插入数据失败");
+            else System.out.println("登录成功, 插入数据成功");
         }
-        else return false;
+        return user;
     }
-
 }

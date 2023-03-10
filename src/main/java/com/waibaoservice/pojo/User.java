@@ -1,53 +1,55 @@
 package com.waibaoservice.pojo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
  * @author DJS
  * Date create 22:23 2023/2/19
  * Modified By DJS
  **/
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class User {
-    private Integer id;
-    private String tel;
-    private String password;
+    private String code;
+    private String Session_key;
+    private String openid;
+    private String unionid;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getSession_key() {
+        return Session_key;
+    }
+
+    public void setSession_key(String session_key) {
+        this.Session_key = session_key;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public String getUnionid() {
+        return unionid;
+    }
+
+    public void setUnionid(String unionid) {
+        this.unionid = unionid;
+    }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", tel='" + tel + '\'' +
-                ", password='" + password + '\'' +
+                "code='" + code + '\'' +
+                ", Session_key='" + Session_key + '\'' +
+                ", openid='" + openid + '\'' +
+                ", unionid='" + unionid + '\'' +
                 '}';
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
